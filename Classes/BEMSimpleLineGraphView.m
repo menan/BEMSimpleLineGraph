@@ -581,7 +581,7 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
                             circleDot.alpha = 1.0;
                           }
                           else{
-                            circleDot.alpha = 0.7
+                            circleDot.alpha = 0.7;
                           }
                         } completion:^(BOOL finished) {
                             if (self.alwaysDisplayDots == NO && self.displayDotsOnly == NO) {
