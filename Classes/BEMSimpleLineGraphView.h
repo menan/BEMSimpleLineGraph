@@ -37,7 +37,7 @@ IB_DESIGNABLE @interface BEMSimpleLineGraphView : UIView <UIGestureRecognizerDel
 
 
 /** The object that acts as the delegate of the receiving line graph.
- 
+
  @abstract The BEMSimpleLineGraphView delegate object plays a key role in changing the appearance of the graph and receiving graph events. Use the delegate to provide appearance changes, receive touch events, and receive graph events. The delegate can be set from the interface or from code.
  @discussion The delegate must adopt the \p BEMSimpleLineGraphDelegate protocol. The delegate is not retained.*/
 @property (nonatomic, weak, nullable) IBOutlet id <BEMSimpleLineGraphDelegate> delegate;
@@ -50,7 +50,7 @@ IB_DESIGNABLE @interface BEMSimpleLineGraphView : UIView <UIGestureRecognizerDel
 
 
 /** The object that acts as the data source of the receiving line graph.
- 
+
  @abstract The BEMSimpleLineGraphView data source object is essential to the line graph. Use the data source to provide the graph with data (data points and x-axis labels). The delegate can be set from the interface or from code.
  @discussion The data source must adopt the \p BEMSimpleLineGraphDataSource protocol. The data source is not retained.*/
 @property (nonatomic, weak) IBOutlet id <BEMSimpleLineGraphDataSource> dataSource;
@@ -427,7 +427,7 @@ IB_DESIGNABLE @interface BEMSimpleLineGraphView : UIView <UIGestureRecognizerDel
 
 /** Sent to the delegate each time the line graph finishes loading or reloading.
  @discussion The respective graph object's data has been loaded at this time. However, the graph may not be fully rendered. Use this method to update any content with the new graph object's data.
- 
+
  @seealso lineGraphDidBeginLoading: lineGraphDidFinishDrawing:
  @param graph The graph object that finished loading or reloading. */
 - (void)lineGraphDidFinishLoading:(BEMSimpleLineGraphView *)graph;
@@ -435,9 +435,9 @@ IB_DESIGNABLE @interface BEMSimpleLineGraphView : UIView <UIGestureRecognizerDel
 
 /** Sent to the delegate each time the line graph finishes animating and drawing.
  @discussion The respective graph object has been completely drawn and animated at this point. It is safe to use \p graphSnapshotImage after recieving this method call on the delegate.
- 
+
  This method may be called in addition to the \p lineGraphDidFinishLoading: method, after drawing has completed. \p animationGraphEntranceTime is taken into account when calling this method.
- 
+
  @seealso lineGraphDidFinishLoading:
  @param graph The graph object that finished drawing. */
 - (void)lineGraphDidFinishDrawing:(BEMSimpleLineGraphView *)graph;
@@ -464,6 +464,38 @@ IB_DESIGNABLE @interface BEMSimpleLineGraphView : UIView <UIGestureRecognizerDel
  @param index The index from left to right of the points on the graph. The first value for the index is 0.
  @return Return YES if you want the popup label to be displayed for this index. */
 - (BOOL)lineGraph:(BEMSimpleLineGraphView *)graph alwaysDisplayPopUpAtIndex:(CGFloat)index;
+
+/* ========================= Custom Functions ================================= */
+
+
+
+/** Optional method to always display some of the pop up labels on the graph.
+ @see alwaysDisplayPopUpLabels must be set to YES for this method to have any affect.
+ @param graph The graph object requesting the total number of points.
+ @param index The index from left to right of the points on the graph. The first value for the index is 0.
+ @return Return YES if you want the popup label to be displayed for this index. */
+- (UIImage *)lineGraph:(BEMSimpleLineGraphView *)graph imageForPointAtIndex:(CGFloat)index;
+
+/** Optional method to always display some of the pop up labels on the graph.
+ @see alwaysDisplayPopUpLabels must be set to YES for this method to have any affect.
+ @param graph The graph object requesting the total number of points.
+ @param index The index from left to right of the points on the graph. The first value for the index is 0.
+ @return Return YES if you want the popup label to be displayed for this index. */
+- (NSString *)lineGraph:(BEMSimpleLineGraphView *)graph popUpTextForlineGraphAtIndex:(CGFloat)index;
+
+/** Optional method to always display some of the pop up labels on the graph.
+ @see alwaysDisplayPopUpLabels must be set to YES for this method to have any affect.
+ @param graph The graph object requesting the total number of points.
+ @param index The index from left to right of the points on the graph. The first value for the index is 0.
+ @return Return YES if you want the popup label to be displayed for this index. */
+- (NSString *)lineGraph:(BEMSimpleLineGraphView *)graph popUpDetailTextForlineGraphAtIndex:(CGFloat)index;
+- (Boolean)lineGraph:(BEMSimpleLineGraphView *)graph shouldShowActionButtonAtIndex:(CGFloat)index;
+
+
+
+- (void) popUpLabelActionButtonTapped:(id)sender;
+
+/* ========================= Custom Functions ================================= */
 
 
 /** Optional method to set the maximum value of the Y-Axis. If not implemented, the maximum value will be the biggest point of the graph.
@@ -496,7 +528,7 @@ IB_DESIGNABLE @interface BEMSimpleLineGraphView : UIView <UIGestureRecognizerDel
 - (CGFloat)staticPaddingForLineGraph:(BEMSimpleLineGraphView *)graph;
 
 
-/** Optional method to return a custom popup view to be used on the chart 
+/** Optional method to return a custom popup view to be used on the chart
  @param graph The graph object requesting the padding value.
  @return The custom popup view to use */
 - (UIView *)popUpViewForLineGraph:(BEMSimpleLineGraphView *)graph;
@@ -551,7 +583,7 @@ IB_DESIGNABLE @interface BEMSimpleLineGraphView : UIView <UIGestureRecognizerDel
 
 /** An array of graph indices where X-Axis labels should be drawn
  @discussion This allows high customization over where X-Axis labels can be placed.  They can be placed in non-consistent intervals. Additionally,
-    it allows you to draw the X-Axis labels based on traits of your data (eg. when the date corresponding to the data becomes a new day). 
+    it allows you to draw the X-Axis labels based on traits of your data (eg. when the date corresponding to the data becomes a new day).
     When this is set, `numberOfGapsBetweenLabelsOnLineGraph` is ignored
  @param graph The graph object which is requesting the number of gaps between the labels.
  @return Array of graph indices to place X-Axis labels */
@@ -582,7 +614,7 @@ IB_DESIGNABLE @interface BEMSimpleLineGraphView : UIView <UIGestureRecognizerDel
 
 
 /** Starting value to begin drawing Y-Axis labels  MUST ALSO IMPLEMENT incrementValueForYAxisOnLineGraph FOR THIS TO TAKE EFFECT
- @discussion This allows you to finally hone the granularity of the data label.  Instead of drawing values like 11.24, 
+ @discussion This allows you to finally hone the granularity of the data label.  Instead of drawing values like 11.24,
     you can lock these values to draw 11.20 to make it more user friendly.  When this is set, `numberOfYAxisLabelsOnLineGraph` is ignored.
  @param graph The graph object which is requesting the number of gaps between the labels.
  @return The base value to draw the first Y-Axis label */
@@ -655,7 +687,7 @@ IB_DESIGNABLE @interface BEMSimpleLineGraphView : UIView <UIGestureRecognizerDel
 
 /** \b DEPRECATED. No longer available on \p BEMSimpleLineGraphDelegate. Implement this method on \p BEMSimpleLineGraphDataSource instead. The vertical position for a point at the given index. It corresponds to the Y-axis value of the Graph.
  @deprecated Deprecated in 2.3. Implement with \p BEMSimpleLineGraphDataSource instead.
- 
+
  @param graph The graph object requesting the point value.
  @param index The index from left to right of a given point (X-axis). The first value for the index is 0.
  @return The Y-axis value at a given index. */
@@ -664,7 +696,7 @@ IB_DESIGNABLE @interface BEMSimpleLineGraphView : UIView <UIGestureRecognizerDel
 
 /** \b DEPRECATED. No longer available on \p BEMSimpleLineGraphDelegate. Implement this method on \p BEMSimpleLineGraphDataSource instead. The string to display on the label on the X-axis at a given index. Please note that the number of strings to be returned should be equal to the number of points in the Graph.
  @deprecated Deprecated in 2.3. Implement with \p BEMSimpleLineGraphDataSource instead.
- 
+
  @param graph The graph object which is requesting the label on the specified X-Axis position.
  @param index The index from left to right of a given label on the X-axis. Is the same index as the one for the points. The first value for the index is 0. */
 - (NSString *)lineGraph:(BEMSimpleLineGraphView *)graph labelOnXAxisForIndex:(NSInteger)index __unavailable __deprecated;
