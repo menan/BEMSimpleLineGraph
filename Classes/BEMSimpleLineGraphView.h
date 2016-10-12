@@ -141,6 +141,8 @@ IB_DESIGNABLE @interface BEMSimpleLineGraphView : UIView <UIGestureRecognizerDel
 /// The graph's label font used on various axis. This property may be privately overwritten, do not expect full functionality from this property.
 @property (strong, nonatomic, nullable) UIFont *labelFont;
 
+/// The graph's label font used on various axis. This property may be privately overwritten, do not expect full functionality from this property.
+@property (strong, nonatomic, nullable) UIColor *popupLabelColor;
 
 /// Time of the animation when the graph appears in seconds. Default value is 1.5.
 @property (nonatomic) CGFloat animationGraphEntranceTime;

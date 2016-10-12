@@ -195,7 +195,6 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
     _formatStringForValues = @"%.0f";
     _interpolateNullValues = YES;
     _displayDotsOnly = NO;
-    _showPopupAfterTouchEnd = NO;
 
 
     // Initialize the various arrays

@@ -27,4 +27,26 @@
     CGContextFillPath(ctx);
 }
 
+
+- (void) setImage: (UIImage *) image{
+
+
+    UIImageView *imageView = [[UIImageView alloc] init];
+
+    imageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIColor *color = [UIColor colorWithRed:0.69 green:0.14 blue:0.14 alpha:1.0];
+    [imageView setTintColor:color];
+
+    float margin = 3.5f;
+
+    //specify the frame of the imageView in the superview , here it will fill the superview
+    imageView.frame = CGRectMake(self.bounds.origin.x+ margin, self.bounds.origin.y + margin, self.bounds.size.width - margin*2, self.bounds.size.height - margin*2);
+
+    [imageView setContentMode:UIViewContentModeScaleToFill];
+
+    // add the imageview to the superview
+    [self addSubview:imageView];
+
+}
+
 @end
