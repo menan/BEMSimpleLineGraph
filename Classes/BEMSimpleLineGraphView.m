@@ -195,6 +195,7 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
     _formatStringForValues = @"%.0f";
     _interpolateNullValues = YES;
     _displayDotsOnly = NO;
+    _showPopupAfterTouchEnd = NO;
 
 
     // Initialize the various arrays
@@ -379,14 +380,13 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
 
                 NSString *mString = [fullString stringByReplacingOccurrencesOfString:@"[0-9-]" withString:@"N" options:NSRegularExpressionSearch range:NSMakeRange(0, [longestString length])];
 
-                self.popUpLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 20)];
+                self.popUpLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 110, 20)];
                 self.popUpLabel.text = mString;
                 self.popUpLabel.textAlignment = 1;
                 self.popUpLabel.numberOfLines = 2;
                 self.popUpLabel.font = self.labelFont;
-                self.popUpLabel.textColor = self.popupLabelColor;
+                self.popUpLabel.textColor = [UIColor blackColor];
                 self.popUpLabel.backgroundColor = [UIColor clearColor];
-                [self.popUpLabel sizeToFit];
                 self.popUpLabel.alpha = 0;
 
                 self.popUpDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 110, 10)];
@@ -1391,20 +1391,23 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
 #pragma clang diagnostic pop
         }
 
-        [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-            if (self.alwaysDisplayDots == NO && self.displayDotsOnly == NO) {
-                closestDot.alpha = 0;
-            }
+        if (!self.showPopupAfterTouchEnd) {
 
-            self.touchInputLine.alpha = 0;
-            if (self.enablePopUpReport == YES) {
-                self.popUpView.alpha = 0;
-                self.popUpLabel.alpha = 0;
-                self.popUpDetailLabel.alpha = 0;
-                self.shareButton.alpha = 0;
-//                self.customPopUpView.alpha = 0;
-            }
-        } completion:nil];
+            [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                if (self.alwaysDisplayDots == NO && self.displayDotsOnly == NO) {
+                    closestDot.alpha = 0;
+                }
+
+                self.touchInputLine.alpha = 0;
+                if (self.enablePopUpReport == YES) {
+                    self.popUpView.alpha = 0;
+                    self.popUpLabel.alpha = 0;
+                    self.popUpDetailLabel.alpha = 0;
+                    self.shareButton.alpha = 0;
+    //                self.customPopUpView.alpha = 0;
+                }
+            } completion:nil];
+        }
     }
 }
 
